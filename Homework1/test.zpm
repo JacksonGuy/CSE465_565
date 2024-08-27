@@ -1,0 +1,8 @@
+A = 2 ;
+PRINT A ;
+B = 3 ;
+PRINT B ;
+A = B ;
+PRINT A ;
+
+PRINT B ;
