@@ -1,0 +1,49 @@
+four criteria for languages
+    1. Readability: how easy to understand
+    2. Writability: how easy to write
+    3. Reliability: conformance to specifications
+    4. Cost: Memory, CPU, LOC, etc
+
+Computer architecture dictates programming language design
+    --> Assembly interacts with memory and CPU directly
+    --> modern OS's have layers between hardware and software, thus modern languages
+
+Programming Language categories
+    1. Imperative
+        - C, Java, Python, etc
+        - Variables, loops, etc
+        - Object oriented design
+    2. Functional
+        - LISP, Haskell, ML, Scheme
+        - Everything is done using functions
+    3. Logical
+        - Prolog
+        - Rule based
+    4. Markup
+        - HTML, XML
+        - Used to represent data
+        - Usually supporting some other language
+
+Implementation methods
+    1. Compilation
+        - Programs are translated into machine language
+        - C/C++, Java
+    2. Pure interpretation
+        - Programs are ran in real time by another program called an interpreter
+        - Python, Lua
+    3. Hybrid
+        - Does both
+        - Javascript (apparently??)
+
+Just-In-Time (JIT)
+    - Translates program into an intermediate language
+    - Intermediate language is then compiled
+    - Hybrid approach
+
+Languages to remember:
+    FORTRAN - Math programs, first language
+    LSIP - first used for AI
+    COBOL - Popular for business
+    Prolog - first logical language
+    Smalltalk - First object oriented implementation
+    C - First systems language

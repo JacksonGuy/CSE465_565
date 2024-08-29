@@ -1,8 +1,37 @@
+A = 0 ;
+A += -1 ;
+
+A = 1 ;
+PRINT A ;
+
 A = 2 ;
 PRINT A ;
+
 B = 3 ;
 PRINT B ;
 A = B ;
 PRINT A ;
 
+B = 0 ;
+C = "Hello" ;
+FOR 5 ;
+    PRINT C ; 
+    FOR 5 ;
+        B += 1 ;
+    ENDFOR ;
+ENDFOR ;
+PRINT B ;
+
+A = 6 ;
+A += 2 ;
+PRINT A ;
+C += "World" ;
+PRINT C ;
+
+A = 2 ;
+A *= 2 ;
+PRINT A ;
+
+B = 10 ;
+B -= 3 ;
 PRINT B ;
