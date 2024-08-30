@@ -1,4 +1,3 @@
-
 import java.io.File;
 import java.util.*;
 import java.io.FileNotFoundException;
@@ -115,38 +114,37 @@ public class Zpm {
                             modifyVar.numVal = Integer.parseInt(value);
                             modifyVar.type = Variable.varType.NUMBER;
                         }
-                        else {
-                            if (variables.containsKey(value)) {
-                                Variable otherVar = variables.get(value);
-                                if (otherVar.type == Variable.varType.STRING) {
-                                    if (modifyVar.type == Variable.varType.STRING) {
-                                        modifyVar.strVal = otherVar.strVal;
-                                        modifyVar.type = Variable.varType.STRING;
-                                    }
-                                    else {
-                                        // Tried adding string to a number
-                                        System.out.println("RUNTIME ERROR: Line " + lineCount);
-                                        System.exit(0);
-                                    }
+                        else if (variables.containsKey(value)) {
+                            Variable otherVar = variables.get(value);
+                            if (otherVar.type == Variable.varType.STRING) {
+                                if (modifyVar.type == Variable.varType.STRING) {
+                                    modifyVar.strVal = otherVar.strVal;
+                                    modifyVar.type = Variable.varType.STRING;
                                 }
-                                else if (otherVar.type == Variable.varType.NUMBER) {
-                                    if (modifyVar.type == Variable.varType.NUMBER) {
-                                        modifyVar.numVal = otherVar.numVal;
-                                        modifyVar.type = Variable.varType.NUMBER;
-                                    }
-                                    else {
-                                        // Tried adding a number to a string
-                                        System.out.println("RUNTIME ERROR: Line " + lineCount);
-                                        System.exit(0);
-                                    }
+                                else {
+                                    // Tried adding string to a number
+                                    System.out.println("RUNTIME ERROR: Line " + lineCount);
+                                    System.exit(0);
                                 }
                             }
-                            else {
-                                // Variable Doesn't Exist
-                                System.out.println("RUNTIME ERROR: Line " + lineCount);
-                                System.exit(0);
+                            else if (otherVar.type == Variable.varType.NUMBER) {
+                                if (modifyVar.type == Variable.varType.NUMBER) {
+                                    modifyVar.numVal = otherVar.numVal;
+                                    modifyVar.type = Variable.varType.NUMBER;
+                                }
+                                else {
+                                    // Tried adding a number to a string
+                                    System.out.println("RUNTIME ERROR: Line " + lineCount);
+                                    System.exit(0);
+                                }
                             }
                         }
+                        else {
+                            // Value doesn't make sense
+                            System.out.println("RUNTIME ERROR: Line " + lineCount);
+                            System.exit(0);
+                        }
+
                         i += 2;
                         break;
                     case "+=":
@@ -336,7 +334,13 @@ public class Zpm {
     private Boolean isNumber(String str) {
         for (int i = 0; i < str.length(); i++) {
             char ch = str.charAt(i);
-            if (!Character.isDigit(ch) || (ch != '-' && i == 0)) return false;
+            if (ch == '-' && i != 0) {
+                return false;
+            } 
+
+            if (!Character.isDigit(ch) && ch != '-') {
+                return false;
+            }
         }
         return true;
     }
