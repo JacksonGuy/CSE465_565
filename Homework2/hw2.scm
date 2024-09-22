@@ -173,8 +173,39 @@
 ; state1 -- the first state to look for
 ; state2 -- the second state to look for
 ; zips -- the zipcode DB
+
+(define (getPlaces state zips)
+  (if (null? zips)
+      '()
+      (if (equal? (caddar zips) state)
+          (cons (cadar zips) (getPlaces state (cdr zips)))
+          (getPlaces state (cdr zips))
+      )
+  )
+)
+
+(define (contains lst item)
+  (if (null? lst)
+      #f
+      (if (equal? (car lst) item)
+          #t
+          (contains (cdr lst) item)
+      )
+  )
+)
+
+(define (getUnion lst1 lst2)
+  (if (null? lst2)
+      '()
+      (if (contains lst1 (car lst2))
+          (cons (car lst2) (getUnion (cdr lst1) (cdr lst2)))
+          (getUnion (cdr lst1) (cdr lst2))
+      )
+  )
+)
+
 (define (getCommonPlaces state1 state2 zips)
-	(list state1 state2)
+  (getUnion (getPlaces state1 zips) (getPlaces state2 zips))
 )
 
 (line "getCommonPlaces")
