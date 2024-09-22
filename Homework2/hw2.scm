@@ -74,8 +74,23 @@
 ; Returns a list of two numeric values. The first is the smallest
 ; in the list and the second is the largest in the list. 
 ; lst -- contains numeric values, and length is >= 1.
+
+(define (getMin lst)
+  (if (= 1 (length lst))
+    (car lst)
+    (min (car lst) (getMin (cdr lst)))
+  )
+)
+
+(define (getMax lst)
+  (if (= 1 (length lst))
+    (car lst)
+    (max (car lst) (getMax (cdr lst)))
+  )
+)
+
 (define (minAndMax lst)
-	'()
+  (list (getMin lst) (getMax lst))
 )
 
 (line "minAndMax")
