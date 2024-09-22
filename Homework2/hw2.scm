@@ -216,8 +216,15 @@
 ; Returns the number of zipcode entries for a particular state.
 ; state -- state
 ; zips -- zipcode DB
+
 (define (zipCount state zips)
-	0
+  (if (null? zips)
+      0
+      (if (equal? (caddar zips) state)
+          (+ 1 (zipCount state (cdr zips)))
+          (+ 0 (zipCount state (cdr zips)))
+      )
+  )
 )
 
 (line "zipCount")
