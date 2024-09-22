@@ -125,8 +125,19 @@
 ; The inputs '(1 2) and '(a b c) should return a single list:
 ; ((1 a) (1 b) (1 c) (2 a) (2 b) (2 c))
 ; lst1 & lst2 -- two flat lists.
+
+(define (crossHelp item lst)
+  (if (null? lst)
+      '()
+      (cons (list item (car lst)) (crossHelp item (cdr lst)))
+  )
+)
+
 (define (crossproduct lst1 lst2)
-	'()
+  (if (null? lst1)
+      '()
+      (append (crossHelp (car lst1) lst2) (crossHelp (cadr lst1) lst2))
+  )
 )
 
 (line "crossproduct")
