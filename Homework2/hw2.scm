@@ -152,8 +152,16 @@
 ; zips -- the zipcode DB- You MUST pass the 'zipcodes' function
 ; from the 'zipcodes.scm' file for this. You can just call 'zipcodes' directly
 ; as shown in the sample example
+
 (define (getLatLon zipcode zips)
-	(list zipcode (car zips))
+  (if (null? zips)
+      '()
+      (if (equal? zipcode (car (car zips)))
+          ; For whatever reason, caddddr and cadddddr wouldn't work here
+          (list (cadr (cdddr (car zips))) (caddr (cdddr (car zips))))
+          (getLatLon zipcode (cdr zips))
+      )
+  )
 )
 
 (line "getLatLon")
