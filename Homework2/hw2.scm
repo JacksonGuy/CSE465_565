@@ -244,8 +244,21 @@
 ; lst -- flat list of items
 ; filters -- list of predicates to apply to the individual elements
 
+(define (FLHelper lst filter)
+  (if (null? lst)
+      '()
+      (if (equal? (filter (car lst)) #t)
+          (cons (car lst) (FLHelper (cdr lst) filter))
+          (FLHelper (cdr lst) filter)
+      )
+  )
+)
+
 (define (filterList lst filters)
-	lst
+  (if (null? filters)
+      lst
+      (filterList (FLHelper lst (car filters)) (cdr filters))
+  )
 )
 
 (line "filterList")
