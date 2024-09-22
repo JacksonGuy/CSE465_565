@@ -46,7 +46,22 @@
 ; Returns true if the two lists have identical structure
 ; in terms of how many elements and nested lists they have in the same order
 (define (struct lst1 lst2)
-	#t
+  (if (null? lst1)
+      (if (null? lst2)
+          #t
+          #f
+      )
+      (if (list? (car lst1))
+          (if (list? (car lst2))
+              (struct (cdr lst1) (cdr lst2))
+              #f
+          )
+          (if (list? (car lst2))
+              #f
+              (struct (cdr lst1) (cdr lst2))
+          )
+      )
+  )
 )
 
 (line "struct")
