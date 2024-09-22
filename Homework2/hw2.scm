@@ -198,9 +198,26 @@
   (if (null? lst2)
       '()
       (if (contains lst1 (car lst2))
-          (cons (car lst2) (getUnion (cdr lst1) (cdr lst2)))
-          (getUnion (cdr lst1) (cdr lst2))
+          (cons (car lst2) (getUnion lst1 (cdr lst2)))
+          (getUnion lst1 (cdr lst2))
       )
+  )
+)
+
+(define (removeItem lst item)
+  (if (null? lst)
+      '()
+      (if (equal? (car lst) item)
+          (removeItem (cdr lst) item)
+          (cons (car lst) (removeItem (cdr lst) item))
+      )
+  )
+)
+
+(define (removeDups lst)
+  (if (null? lst)
+      '()
+      (cons (car lst) (removeDups (removeItem (cdr lst) (car lst))))
   )
 )
 
@@ -209,7 +226,7 @@
 )
 
 (line "getCommonPlaces")
-(mydisplay (getCommonPlaces "OH" "MI" zipcodes))
+(mydisplay (removeDups (getCommonPlaces "OH" "MI" zipcodes)))
 (line "getCommonPlaces")
 ; ---------------------------------------------
 
