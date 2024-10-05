@@ -46,6 +46,8 @@ max([H|T], MAX) :- max(T, R), maxnums(H, R, MAX).
 % ** You can always assume that the given LST is not empty. 
 % partitionable(LST).
 
+partitionable([_]) :- true.
+partitionable([H|T]) :- partitionable().
  
 % partitionable([1, 2, 3, 4, 10]). -> true. because [10, 10]
 % partitionable([2, 1, 1]). -> true. because [2, 2]
@@ -58,6 +60,9 @@ max([H|T], MAX) :- max(T, R), maxnums(H, R, MAX).
 % list of integer numbers
 % elementExist(E, LST).
 
+elementExist(E, [E]) :- !.
+elementExist(E, [E|_]) :- !.
+elementExist(E, [_|T]) :- elementExist(E, T).
 
 % elementExist(1, [1, 2, 3]). -> true.
 % elementExist(1, []). -> false.
