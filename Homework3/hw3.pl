@@ -6,7 +6,8 @@
 % Determine the Maximum of two int numbers
 % maxnums(A, B, MAX).
 
-maxnums(A, B, MAX). 
+maxnums(A, B, A) :- A >= B.
+maxnums(A, B, B) :- A < B.
 
 % maxnums(-12, 12, MAX). -> MAX = 12
 % maxnums(11232, 92674, MAX). -> MAX = 92674
@@ -29,6 +30,7 @@ sum([H|T], SUM) :- sum(T,S), SUM is H + S.
 %    as part of your solution.
 % ** You can always assume that the given LST is not empty. 
 % max(LST, MAX).
+
 
 
 % max([-5, -5, -5], MAX). -> MAX = -5
