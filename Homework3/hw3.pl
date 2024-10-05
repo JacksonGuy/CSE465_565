@@ -84,6 +84,9 @@ reverse([H|T], REVLST) :- reverse(T, R), append(R,[H],REVLST).
 % Determine the list of integer numbers that are only one digit numbers
 % collectOneDigits(LST, NEWLST). 
 
+collectOneDigits([], []).
+collectOneDigits([H|T], [H|Tail]) :- H < 10, collectOneDigits(T, Tail).
+collectOneDigits([H|T], NEWLST) :- H >= 10, collectOneDigits(T, NEWLST).
 
 % collectOneDigits([10, 90, -20], NEWLST). -> NEWLST = []
 % collectOneDigits([], NEWLST). -> NEWLST = []
