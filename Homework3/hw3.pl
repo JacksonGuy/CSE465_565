@@ -46,7 +46,7 @@ max([H|T], MAX) :- max(T, R), maxnums(H, R, MAX).
 % ** You can always assume that the given LST is not empty. 
 % partitionable(LST).
 
-partitionable([E]).
+partitionable([_]).
 partitionable(LST) :- 
     append(A, B, LST),
     sum(A, S1), sum(B, S2),
@@ -106,9 +106,6 @@ collectOneDigits([H|T], NEWLST) :- H >= 10, collectOneDigits(T, NEWLST).
 
 :- consult('zipcodes.pl').
 
-getStateInfo(_, STATE, ZIPCODE) :- location(ZIPCODE, _, STATE, _, _, _).
-getStateInfo(PLACE, _, ZIPCODE) :- location(ZIPCODE, PLACE, _, _, _, _).
-getStateInfo(PLACE, STATE, _) :- location(_, PLACE, STATE, _, _, _).
 getStateInfo(PLACE, STATE, ZIPCODE) :- location(ZIPCODE, PLACE, STATE, _, _, _).
 
 % getStateInfo('Oxford', State, 45056). -> State = 'OH'
@@ -194,7 +191,7 @@ getCommon(STATE1, STATE2, PLACELIST) :-
 % ndee','Marysville','Ray','Franklin','Mason','Lowell','Newport','
 % ------------------------------------------------
 % #10 ( -- /Graduate) (0/10 pts)
-* ** Only for Graduate Studetns **
+% ** Only for Graduate Studetns **
 % Download the 'parse.pl' from canvas and study it.
 % Write Prolog rules to parse simple English sentences 
 % (similar to how it was done in parse.pl). The difference here is that 
