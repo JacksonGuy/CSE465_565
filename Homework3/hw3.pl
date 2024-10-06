@@ -46,8 +46,11 @@ max([H|T], MAX) :- max(T, R), maxnums(H, R, MAX).
 % ** You can always assume that the given LST is not empty. 
 % partitionable(LST).
 
-partitionable([_]) :- true.
-partitionable([H|T]) :- partitionable().
+partitionable([E]).
+partitionable(LST) :- 
+    append(A, B, LST),
+    sum(A, S1), sum(B, S2),
+    S1 = S2.
  
 % partitionable([1, 2, 3, 4, 10]). -> true. because [10, 10]
 % partitionable([2, 1, 1]). -> true. because [2, 2]
