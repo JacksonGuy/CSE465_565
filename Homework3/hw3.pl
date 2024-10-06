@@ -101,6 +101,12 @@ collectOneDigits([H|T], NEWLST) :- H >= 10, collectOneDigits(T, NEWLST).
 % Determine all places based on given state and zipcode.
 % getStateInfo(PLACE, STATE< ZIPCODE).
 
+:- consult('zipcodes.pl').
+
+getStateInfo(_, STATE, ZIPCODE) :- location(ZIPCODE, _, STATE, _, _, _).
+getStateInfo(PLACE, _, ZIPCODE) :- location(ZIPCODE, PLACE, _, _, _, _).
+getStateInfo(PLACE, STATE, _) :- location(_, PLACE, STATE, _, _, _).
+getStateInfo(PLACE, STATE, ZIPCODE) :- location(ZIPCODE, PLACE, STATE, _, _, _).
 
 % getStateInfo('Oxford', State, 45056). -> State = 'OH'
 % getStateInfo('Oxford', State, _). -> 
@@ -146,6 +152,18 @@ collectOneDigits([H|T], NEWLST) :- H >= 10, collectOneDigits(T, NEWLST).
 %    practice. 
 % getCommon(STATE1, STATE2, PLACELST).
 
+% Get the intersection of two lists
+inter([], _, []).
+inter([H1|T1], L2, [H1|Res]) :-
+    member(H1, L2),
+    inter(T1, L2, Res).
+inter([_|T1], L2, Res) :-
+    inter(T1, L2, Res).
+
+getCommon(STATE1, STATE2, PLACELIST) :- 
+    findall(PLACE1, location(_,PLACE1,STATE1,_,_,_),STATE1PLACES),
+    findall(PLACE2, location(_,PLACE2,STATE2,_,_,_),STATE2PLACES),
+    inter(STATE1PLACES, STATE2PLACES, PLACELIST).
 
 % getCommon('OH','MI',PLACELST). -> *Should be 131 unique plcase* 
 % ['Manchester','Unionville','Athens','Saint
