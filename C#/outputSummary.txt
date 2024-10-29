@@ -1,0 +1,1 @@
+Average of the 9 numbers is 50
