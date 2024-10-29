@@ -115,19 +115,35 @@ public class Hw4
             }
         }
 
-        // Output HashSets
-        string result = ""; 
-        foreach(string city in cities) {
-            string[] arr = new string[cityStates[city].Count];
-            cityStates[city].CopyTo(arr);
-            Array.Sort(arr);
-            
-            foreach (string state in arr) {
-                result += state + " ";
-            }
-            result += Environment.NewLine;
+        // Write result to file
+        string result = "";
+        foreach (string zip in zips) {
+            result += zipLocations[zip] + Environment.NewLine;
         }
-        File.WriteAllText("CityStates.txt", result);
+        File.WriteAllText("LatLon.txt", result);
+    }
+
+    /*
+        Gets all the states which contain the given cities
+    */
+    public static void GetCityStates(string[] lines)
+    {
+        string[] cities = File.ReadAllLines("cities.txt");
+
+        // Convert city names to upper case
+        for (int i = 0; i < cities.Length; i++) {
+            cities[i] = cities[i].ToUpper();
+        }
+
+        // HashSet of states for each city to ensure uniqueness
+        Dictionary<string, HashSet<string>> cityStates = 
+            new Dictionary<string, HashSet<string>>();
+
+        // Initialize HashSets
+        foreach (string city in cities) {
+            cityStates.Add(city, new HashSet<string>());
+        }
+
     }
 
     public static void Main(string[] args)
