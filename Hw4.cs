@@ -114,6 +114,20 @@ public class Hw4
                 zipLocations.Add(zipcode, lat + " " + lon);
             }
         }
+
+        // Output HashSets
+        string result = ""; 
+        foreach(string city in cities) {
+            string[] arr = new string[cityStates[city].Count];
+            cityStates[city].CopyTo(arr);
+            Array.Sort(arr);
+            
+            foreach (string state in arr) {
+                result += state + " ";
+            }
+            result += Environment.NewLine;
+        }
+        File.WriteAllText("CityStates.txt", result);
     }
 
     public static void Main(string[] args)
