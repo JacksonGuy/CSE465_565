@@ -160,6 +160,19 @@ public class Hw4
             cityStates[city].Add(state);
         }
 
+        // Output HashSets
+        string result = ""; 
+        foreach(string city in cities) {
+            string[] arr = new string[cityStates[city].Count];
+            cityStates[city].CopyTo(arr);
+            Array.Sort(arr);
+            
+            foreach (string state in arr) {
+                result += state + " ";
+            }
+            result += Environment.NewLine;
+        }
+        File.WriteAllText("CityStates.txt", result);
     }
 
     public static void Main(string[] args)
@@ -176,6 +189,7 @@ public class Hw4
 
         GetCommonCityNames(lines);
         GetLatLon(lines);
+        GetCityStates(lines);
 
         // ============================
         // Do not add or change anything below, inside the 
