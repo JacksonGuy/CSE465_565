@@ -144,6 +144,22 @@ public class Hw4
             cityStates.Add(city, new HashSet<string>());
         }
 
+        // Iterate over each line
+        foreach(string line in lines) {
+            // Get line details
+            string[] tokens = line.Split("\t");
+            string city = tokens[3];
+            string state = tokens[4];
+
+            // Skip line if doesn't contain relevant city
+            if (Array.IndexOf(cities, city) == -1) {
+                continue;
+            }
+
+            // Add state to city HashSet
+            cityStates[city].Add(state);
+        }
+
     }
 
     public static void Main(string[] args)
