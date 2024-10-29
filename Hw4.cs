@@ -18,6 +18,9 @@ using System.Collections.Generic;
 
 public class Hw4
 {
+    /*
+        Gets the common city names between the states listed in states.txt
+    */
     public static void GetCommonCityNames(string[] lines)
     {
         // Open states.txt to get states
@@ -83,6 +86,27 @@ public class Hw4
         File.WriteAllText("CommonCityNames.txt", result);
     }
 
+    /*
+        Gets the first latitude and longitude for each zipcode 
+    */
+    public static void GetLatLon(string[] lines)
+    {
+        string[] zips = File.ReadAllLines("zips.txt");
+
+        Dictionary<string, string> zipLocations = 
+            new Dictionary<string, string>();
+
+        // Iterate over lines
+        foreach (string line in lines) {
+            // Get details about the line
+            string[] tokens = line.Split("\t");
+            string zipcode = tokens[1];
+            string lat = tokens[6];
+            string lon = tokens[7];
+
+        }
+    }
+
     public static void Main(string[] args)
     {
         // Capture the start time
@@ -96,6 +120,7 @@ public class Hw4
         string[] lines = File.ReadAllLines("zipcodes.txt");
 
         GetCommonCityNames(lines);
+        GetLatLon(lines);
 
         // ============================
         // Do not add or change anything below, inside the 
