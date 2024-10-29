@@ -53,7 +53,22 @@ public class Hw4
             cities.Add(city);
         }
 
+        // Get intersection
+        HashSet<string> intersection = new HashSet<string>();
+        foreach (string city in cities) {
+            // Check that city is contained in each entry in states
+            bool inAll = true;
+            foreach(string state in states) {
+                if (!stateCities[state].Contains(city)) {
+                    inAll = false;
+                    break;
+                }
+            }
 
+            if (inAll) {
+                intersection.Add(city);
+            }
+        }
     }
 
     public static void Main(string[] args)
