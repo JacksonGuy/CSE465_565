@@ -104,6 +104,15 @@ public class Hw4
             string lat = tokens[6];
             string lon = tokens[7];
 
+            // Current line has zipcode we aren't looking for
+            if (Array.IndexOf(zips, zipcode) == -1) {
+                continue;
+            }
+
+            // Only add first instance for each zipcode
+            if (!zipLocations.ContainsKey(zipcode)) {
+                zipLocations.Add(zipcode, lat + " " + lon);
+            }
         }
     }
 
