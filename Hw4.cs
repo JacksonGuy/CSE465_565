@@ -69,6 +69,18 @@ public class Hw4
                 intersection.Add(city);
             }
         }
+
+        // Convert intersection to array
+        string[] cityArr = new string[intersection.Count];
+        intersection.CopyTo(cityArr);
+
+        // Sort alphabetically and put into file
+        Array.Sort(cityArr);
+        string result = "";
+        foreach (string city in cityArr) {
+            result += city + Environment.NewLine;
+        }
+        File.WriteAllText("CommonCityNames.txt", result);
     }
 
     public static void Main(string[] args)
@@ -82,6 +94,8 @@ public class Hw4
         // ============================
 
         string[] lines = File.ReadAllLines("zipcodes.txt");
+
+        GetCommonCityNames(lines);
 
         // ============================
         // Do not add or change anything below, inside the 
