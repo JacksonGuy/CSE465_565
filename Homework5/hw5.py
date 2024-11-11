@@ -18,6 +18,15 @@ import time
 3- => yield was used in line/s: .........
 """
 
+def CommonCityNames(zipcodes):
+    states = open("states.txt")
+
+def ZipCodes(zipcodes):
+    pass
+
+def CityStates(zipcodes):
+    pass
+
 if __name__ == "__main__": 
     start_time = time.perf_counter()  # Do not remove this line
     '''
@@ -25,9 +34,11 @@ if __name__ == "__main__":
     -----------------------------------------------------------
     '''
 
-    
-    # write your code here
+    zipcodes = open("zipcodes.txt")
 
+    CommonCityNames(zipcodes)
+    ZipCodes(zipcodes)
+    CityStates(zipcodes)
 
     '''
     Inside the __main__, do not add any codes after this line.
