@@ -31,11 +31,21 @@ def CommonCityNames(zipcodes):
             stateCities[str(line[4])].append(line[3])
 
     # Get intersection
-    common = list(set.intersection(*[set(x) for x in stateCities.values()])).sort()
-    
+    common = list(set.intersection(*[set(x) for x in stateCities.values()]))
+    common.sort()
+
+    # Write to file
+    outfile = open("CommonCityNames.txt", "w")
+    for city in common:
+        outfile.write(city + '\n')
 
 def ZipCodes(zipcodes):
-    pass
+    file = open("zips.txt")
+    codes = [code[:-1] for code in file]
+    
+    # Dictionary for Zipcode -> Lat/Lon
+    coords = {code:"" for code in codes}
+
 
 def CityStates(zipcodes):
     pass
