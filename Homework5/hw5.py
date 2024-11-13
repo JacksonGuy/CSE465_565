@@ -27,8 +27,12 @@ def CommonCityNames(zipcodes):
 
     # Collect cities for each state
     for line in zipcodes:
-        if (line[3] in states):
-            stateCities[str(line[3])].append(line[4])
+        if (line[4] in states):
+            stateCities[str(line[4])].append(line[3])
+
+    # Get intersection
+    common = list(set.intersection(*[set(x) for x in stateCities.values()])).sort()
+    
 
 def ZipCodes(zipcodes):
     pass
