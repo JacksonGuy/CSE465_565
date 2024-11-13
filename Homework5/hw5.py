@@ -59,7 +59,9 @@ def ZipCodes(zipcodes):
         outfile.write(latlon + "\n")
 
 def CityStates(zipcodes):
-    pass
+    file = open("cities.txt")
+    cities = [city[:-1] for city in file]
+
 
 if __name__ == "__main__": 
     start_time = time.perf_counter()  # Do not remove this line
