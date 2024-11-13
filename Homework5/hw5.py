@@ -46,6 +46,12 @@ def ZipCodes(zipcodes):
     # Dictionary for Zipcode -> Lat/Lon
     coords = {code:"" for code in codes}
 
+    # Collect coords for each zipcode
+    found = []
+    for line in zipcodes:
+        if (line[1] in codes and line[1] not in found):
+            coords[line[1]] = line[6] + " " + line[7]
+            found.append(line[1])
 
 def CityStates(zipcodes):
     pass
