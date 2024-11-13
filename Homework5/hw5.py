@@ -77,7 +77,12 @@ def CityStates(zipcodes):
     for city in cities:
         cityStates[city].sort()
 
-    print(cityStates)
+    # Write to file
+    outfile = open("CityStates.txt", "w")
+    for stateList in cityStates.values():
+        for state in stateList:
+            outfile.write(state + " ")
+        outfile.write("\n")
 
 if __name__ == "__main__": 
     start_time = time.perf_counter()  # Do not remove this line
@@ -86,11 +91,12 @@ if __name__ == "__main__":
     -----------------------------------------------------------
     '''
 
+    # Open main zipcode file
     zipcodeFile = open("zipcodes.txt")
     zipCodeLines = [line.split('\t') for line in zipcodeFile]
     zipcodes = zipCodeLines[1:]
 
-
+    # Run functions for each problem
     CommonCityNames(zipcodes)
     ZipCodes(zipcodes)
     CityStates(zipcodes)
