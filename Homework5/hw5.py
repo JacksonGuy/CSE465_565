@@ -53,6 +53,11 @@ def ZipCodes(zipcodes):
             coords[line[1]] = line[6] + " " + line[7]
             found.append(line[1])
 
+    # Write to file
+    outfile = open("LatLon.txt", "w")
+    for latlon in coords.values():
+        outfile.write(latlon + "\n")
+
 def CityStates(zipcodes):
     pass
 
