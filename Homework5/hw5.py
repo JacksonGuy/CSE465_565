@@ -62,6 +62,22 @@ def CityStates(zipcodes):
     file = open("cities.txt")
     cities = [city[:-1] for city in file]
 
+    # Dictionary for City -> list of states
+    cityStates = {city:[] for city in cities}
+
+    # Collect states
+    for line in zipcodes:
+        city = line[3][0] + line[3][1:].lower()
+        state = line[4]
+
+        if (city in cities and state not in cityStates[city]):
+            cityStates[city].append(state)
+    
+    # Sort lists
+    for city in cities:
+        cityStates[city].sort()
+
+    print(cityStates)
 
 if __name__ == "__main__": 
     start_time = time.perf_counter()  # Do not remove this line
