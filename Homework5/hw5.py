@@ -19,7 +19,16 @@ import time
 """
 
 def CommonCityNames(zipcodes):
-    states = open("states.txt")
+    file = open("states.txt")
+    states = [state[:-1] for state in file][:-1]
+   
+    # Dictionary for State -> City list
+    stateCities = {state:[] for state in states}
+
+    # Collect cities for each state
+    for line in zipcodes:
+        if (line[3] in states):
+            stateCities[str(line[3])].append(line[4])
 
 def ZipCodes(zipcodes):
     pass
@@ -34,7 +43,10 @@ if __name__ == "__main__":
     -----------------------------------------------------------
     '''
 
-    zipcodes = open("zipcodes.txt")
+    zipcodeFile = open("zipcodes.txt")
+    zipCodeLines = [line.split('\t') for line in zipcodeFile]
+    zipcodes = zipCodeLines[1:]
+
 
     CommonCityNames(zipcodes)
     ZipCodes(zipcodes)
