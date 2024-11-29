@@ -69,6 +69,11 @@ def parseTokens(tokens):
             semicolon = next(it)[1]
             value = None
 
+            # Implicitly define variable if it doesn't exist yet
+            # This might get removed
+            if (var_name not in variables):
+                variables[var_name] = 0
+
             if (value_token[0] == "NUMBER"):
                 value = int(value_token[1])
             elif (value_token[0] == "STRING"):
@@ -91,8 +96,12 @@ def parseTokens(tokens):
                     variables[var_name] *= value
                 elif (op_token == "\\="):
                     variables[var_name] = int(variables[var_name] / value)
+            except KeyError as e:
+                print(f"Undefined variable {e} on line {line_number}")
+                sys.exit()
             except Exception as e:
                 print(f"Error on line {line_number}")
+                #print(f"{type(e)}: {e}")
                 sys.exit()
 
 if __name__ == "__main__":

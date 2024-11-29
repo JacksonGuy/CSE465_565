@@ -3,7 +3,7 @@ A += 2 ;
 
 NUM += A ;
 
-NAME = "Unknown"
+NAME = "Unknown" ;
 
 PRINT NUM ;
 PRINT NAME ;
