@@ -2,21 +2,22 @@
 
 import sys
 import re
+from typing import List
 
 # From Interpreter.py file on canvas
 TOKEN_SPECIFICATION = (
-    ('VAR',         r'[a-zA-Z_][a-zA-Z_0-9]*\s'),
-    ('ASSIGN',      r'(?<=\s)\=(?=\s)'),                            # Assignment operator
-    ('PLUS_ASSIGN', r'(?<=\s)\+=(?=\s)'),                           # Addition assignment operator
-    ('MINUS_ASSIGN',r'(?<=\s)-=(?=\s)'),                            # Subtraction assignment operator
-    ('MULT_ASSIGN', r'(?<=\s)\*=(?=\s)'),                           # Multiplication assignment operator
-    ('DIV_ASSIGN',  r'(?<=\s)\\=(?=\s)'),                           # Division assignment operator
+    ('VAR',         r'[a-zA-Z_][a-zA-Z_0-9]*'),
+    ('PLUS_ASSIGN', r'\+='),                                        # Addition assignment operator
+    ('MINUS_ASSIGN',r'-='),                                         # Subtraction assignment operator
+    ('MULT_ASSIGN', r'\*='),                                        # Multiplication assignment operator
+    ('DIV_ASSIGN',  r'\\='),                                        # Division assignment operator
     ('INT_VAR_VAL', r'(?<=[\+\-\*]=)\s[a-zA-Z_][a-zA-Z_0-9]*'),     # Integer variable (lookahead for operations)
     ('STR_VAR_VAL', r'(?<=\+=)\s[a-zA-Z_][a-zA-Z_0-9]*'),           # String variable (lookahead for addition)
     ('ASS_VAL',     r'(?<=\=)\s[a-zA-Z_][a-zA-Z_0-9]*'),            # variable (lookahead for assignment)
-    ('NUMBER',      r'(?<=\s)-?\d+(?=\s)'),                         # Integer literal
+    ('ASSIGN',      r'\='),                                         # Assignment operator
+    ('NUMBER',      r'-?\d+'),                                      # Integer literal
     ('STRING',      r'"[^"]*"'),                                    # String literal, handling quotes
-    ('SEMICOLON',   r'(?<=\s);'),                                   # Statement terminator
+    ('SEMICOLON',   r';'),                                          # Statement terminator
     ('WS',          r'\s+'),                                        # Whitespace
     ('NEWLN',       r'\n')
 )
@@ -24,17 +25,68 @@ TOKEN_SPECIFICATION = (
 line_number = 0
 variables = {}
 
+def splitWords(line: str) -> List[str]:
+    words = []
+    buffer = ""
+    gatherQuote = False
+    escapeChar = False
+    for char in line:
+        # If we are inside a quote, add every character
+        if (gatherQuote):
+            if (char == "\\"):
+                escapeChar = True
+                continue
+            
+            # We reached the end of the quote
+            if (char == '"' and escapeChar == False):
+                gatherQuote = False
+
+            # Otherwise, add character to buffer
+            buffer += char
+            escapeChar = False
+            continue
+
+        if (char == ' '):
+            buffer = buffer.strip()
+            if (buffer[0] == '"'):
+                buffer = buffer[1:-1]
+            words.append(buffer)
+            buffer = ""
+        elif (char == '"'):
+            gatherQuote = True
+    
+        buffer += char
+
+    # End of line
+    if (buffer[-1] == '\n'):
+        buffer = buffer[:-1].strip()
+    words.append(buffer.strip())
+    return words
+
 def lexicalAnalysis(line):
     tokens = []
+    words = splitWords(line)
+    #print("Words: " + str(words))
 
-    for tokenType, tokenRegex in TOKEN_SPECIFICATION:
-        regex = re.compile(tokenRegex)
-        match = regex.findall(line)
-        
-        if match and tokenType != 'WS' and tokenType != 'NEWLN':
-            for mat in match:
-                tok = (tokenType, mat.strip())
+    for word in words:
+        for tokenType, tokenRegex in TOKEN_SPECIFICATION:
+            regex = re.compile(tokenRegex)
+            match = regex.findall(word)
+
+            if match and tokenType != 'WS' and tokenType != 'NEWLN':
+                tok = (tokenType, match[0].strip())
                 tokens.append(tok)
+   
+    # Fix tokens
+    if (len(tokens) == 0): 
+        return tokens
+
+    index = 0
+    for token in tokens:
+        if (token[0] in ["PLUS_ASSIGN", "MINUS_ASSIGN", "MULT_ASSIGN", "DIV_ASSIGN"]):
+            del tokens[index + 1]
+        index += 1
+
     return tokens
 
 def parseTokens(tokens):
@@ -55,6 +107,20 @@ def parseTokens(tokens):
                     print(f"Undefined variable '{var_name}' on line {line_number}")
                     sys.exit()
                 continue
+            # Special case for loops
+            elif (token[1] == "FOR"):
+                loop_amount = int(next(it)[1])
+                loop_tokens = []
+                current = next(it)
+                while (current[1] != "ENDFOR"):
+                    loop_tokens.append(current)
+                    current = next(it)
+
+                for i in range(loop_amount):
+                    parseTokens(loop_tokens)
+                
+                # ENDFOR comes at the end of a line, so no other tokens left
+                return
 
             var_name = token[1]
             
@@ -111,7 +177,7 @@ if __name__ == "__main__":
     for line in file:
         line_number += 1
         tokens = lexicalAnalysis(line)
-        #print(tokens)
+        print(tokens)
         parseTokens(tokens)
     print("\n\n")
 
