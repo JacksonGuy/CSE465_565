@@ -6,6 +6,7 @@ from typing import List
 
 # From Interpreter.py file on canvas
 TOKEN_SPECIFICATION = (
+    ('STRING',      r'"[^"]*"'),                                    # String literal, handling quotes
     ('VAR',         r'[a-zA-Z_][a-zA-Z_0-9]*'),
     ('PLUS_ASSIGN', r'\+='),                                        # Addition assignment operator
     ('MINUS_ASSIGN',r'-='),                                         # Subtraction assignment operator
@@ -16,7 +17,7 @@ TOKEN_SPECIFICATION = (
     ('ASS_VAL',     r'(?<=\=)\s[a-zA-Z_][a-zA-Z_0-9]*'),            # variable (lookahead for assignment)
     ('ASSIGN',      r'\='),                                         # Assignment operator
     ('NUMBER',      r'-?\d+'),                                      # Integer literal
-    ('STRING',      r'"[^"]*"'),                                    # String literal, handling quotes
+    #('STRING',      r'"[^"]*"'),                                    # String literal, handling quotes
     ('SEMICOLON',   r';'),                                          # Statement terminator
     ('WS',          r'\s+'),                                        # Whitespace
     ('NEWLN',       r'\n')
@@ -49,7 +50,8 @@ def splitWords(line: str) -> List[str]:
         if (char == ' '):
             buffer = buffer.strip()
             if (buffer[0] == '"'):
-                buffer = buffer[1:-1]
+                #buffer = buffer[1:-1]
+                pass
             words.append(buffer)
             buffer = ""
         elif (char == '"'):
@@ -74,18 +76,23 @@ def lexicalAnalysis(line):
             match = regex.findall(word)
 
             if match and tokenType != 'WS' and tokenType != 'NEWLN':
-                tok = (tokenType, match[0].strip())
+                #print("Match: (" + tokenType + ", " + str(match) + ")")
+                tok = (tokenType, match[0])
                 tokens.append(tok)
+                break
    
     # Fix tokens
     if (len(tokens) == 0): 
         return tokens
 
     index = 0
+    
+    '''
     for token in tokens:
         if (token[0] in ["PLUS_ASSIGN", "MINUS_ASSIGN", "MULT_ASSIGN", "DIV_ASSIGN"]):
             del tokens[index + 1]
         index += 1
+    '''
 
     return tokens
 
@@ -126,11 +133,11 @@ def parseTokens(tokens):
             
             # If we're assigning variable to variable,
             # we need to skip the next token
-            temp = next(it)
-            if (temp[0] == "VAR"):
-                temp = next(it)
+            #temp = next(it)
+            #if (temp[0] == "VAR"):
+            #    temp = next(it)
             
-            op_token = temp[1]
+            op_token = next(it)[1]
             value_token = next(it)
             semicolon = next(it)[1]
             value = None
@@ -167,7 +174,7 @@ def parseTokens(tokens):
                 sys.exit()
             except Exception as e:
                 print(f"Error on line {line_number}")
-                #print(f"{type(e)}: {e}")
+                print(f"{type(e)}: {e}")
                 sys.exit()
 
 if __name__ == "__main__":
@@ -177,7 +184,7 @@ if __name__ == "__main__":
     for line in file:
         line_number += 1
         tokens = lexicalAnalysis(line)
-        print(tokens)
+        #print(tokens)
         parseTokens(tokens)
     print("\n\n")
 
