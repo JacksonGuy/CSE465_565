@@ -17,7 +17,6 @@ TOKEN_SPECIFICATION = (
     ('ASS_VAL',     r'(?<=\=)\s[a-zA-Z_][a-zA-Z_0-9]*'),            # variable (lookahead for assignment)
     ('ASSIGN',      r'\='),                                         # Assignment operator
     ('NUMBER',      r'-?\d+'),                                      # Integer literal
-    #('STRING',      r'"[^"]*"'),                                    # String literal, handling quotes
     ('SEMICOLON',   r';'),                                          # Statement terminator
     ('WS',          r'\s+'),                                        # Whitespace
     ('NEWLN',       r'\n')
@@ -65,10 +64,9 @@ def splitWords(line: str) -> List[str]:
     words.append(buffer.strip())
     return words
 
-def lexicalAnalysis(line):
+def lexicalAnalysis(line: str) -> List[str]:
     tokens = []
     words = splitWords(line)
-    #print("Words: " + str(words))
 
     for word in words:
         for tokenType, tokenRegex in TOKEN_SPECIFICATION:
@@ -76,7 +74,6 @@ def lexicalAnalysis(line):
             match = regex.findall(word)
 
             if match and tokenType != 'WS' and tokenType != 'NEWLN':
-                #print("Match: (" + tokenType + ", " + str(match) + ")")
                 tok = (tokenType, match[0])
                 tokens.append(tok)
                 break
@@ -87,16 +84,9 @@ def lexicalAnalysis(line):
 
     index = 0
     
-    '''
-    for token in tokens:
-        if (token[0] in ["PLUS_ASSIGN", "MINUS_ASSIGN", "MULT_ASSIGN", "DIV_ASSIGN"]):
-            del tokens[index + 1]
-        index += 1
-    '''
-
     return tokens
 
-def parseTokens(tokens):
+def parseTokens(tokens: List[str]) -> None:
     it = iter(tokens)
 
     for token in it:
@@ -107,9 +97,9 @@ def parseTokens(tokens):
                 semicolon = next(it)[1]
                 if (var_name in variables):
                     if (type(variables[var_name]) == int):
-                        print(f"{var_name}: {variables[var_name]}")
+                        print(f"{var_name} = {variables[var_name]}")
                     else:
-                        print(f"{var_name}: \"{variables[var_name]}\"")
+                        print(f"{var_name} = \"{variables[var_name]}\"")
                 else:
                     print(f"Undefined variable '{var_name}' on line {line_number}")
                     sys.exit()
@@ -131,19 +121,12 @@ def parseTokens(tokens):
 
             var_name = token[1]
             
-            # If we're assigning variable to variable,
-            # we need to skip the next token
-            #temp = next(it)
-            #if (temp[0] == "VAR"):
-            #    temp = next(it)
-            
             op_token = next(it)[1]
             value_token = next(it)
             semicolon = next(it)[1]
             value = None
 
             # Implicitly define variable if it doesn't exist yet
-            # This might get removed
             if (var_name not in variables):
                 variables[var_name] = 0
 
@@ -174,7 +157,7 @@ def parseTokens(tokens):
                 sys.exit()
             except Exception as e:
                 print(f"Error on line {line_number}")
-                print(f"{type(e)}: {e}")
+                #print(f"{type(e)}: {e}")
                 sys.exit()
 
 if __name__ == "__main__":
@@ -186,5 +169,3 @@ if __name__ == "__main__":
         tokens = lexicalAnalysis(line)
         #print(tokens)
         parseTokens(tokens)
-    print("\n\n")
-

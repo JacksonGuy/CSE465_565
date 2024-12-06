@@ -13,7 +13,7 @@ NO4_2 *= -1 ;
 NO4_2 -= NUM2 ;
 NO4_2 -= 1 ;
 TAX *= TAX ;
- 
+
 PRINT NUM1 ;
 PRINT NUM2 ;
 PRINT B_3 ;
